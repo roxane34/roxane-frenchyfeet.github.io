@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Les vidéos de Roxane</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 20px;
+      background: #fff;
+      color: #222;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    header h1 {
+      font-weight: bold;
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+    .profile-section {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .profile-text {
+      max-width: 600px;
+      font-size: 1.1em;
+      line-height: 1.4;
+    }
+    .how-it-works {
+      border: 1px solid #ccc;
+      padding: 15px 20px;
+      margin: 0 auto 30px auto;
+      max-width: 600px;
+      font-weight: bold;
+      font-size: 1.1em;
+      text-align: center;
+      background: #fafafa;
+      border-radius: 8px;
+    }
+    /* Slider container */
+    .slider-container {
+      margin-bottom: 50px;
+    }
+    .category-buttons {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .category-buttons button {
+      background: #e91e63;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      margin: 3px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    .category-buttons button.active,
+    .category-buttons button:hover {
+      background-color: #c2185b;
+    }
+    /* Slider */
+    .slider {
+      display: flex;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      gap: 15px;
+      padding-bottom: 10px;
+    }
+    .slider::-webkit-scrollbar {
+      height: 8px;
+    }
+    .slider::-webkit-scrollbar-thumb {
+      background: #e91e63;
+      border-radius: 4px;
+    }
+    .thumbnail {
+      flex: 0 0 auto;
+      width: 220px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .thumbnail img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-bottom: 2px solid #e91e63;
+    }
+    .thumbnail-title {
+      font-weight: bold;
+      margin: 10px 0 15px 0;
+      text-align: center;
+    }
+    /* Zoom effect on centered thumbnail */
+    .slider-center .thumbnail {
+      transform: scale(0.9);
+      opacity: 0.7;
+    }
+    .slider-center .thumbnail.active {
+      transform: scale(1);
+      opacity: 1;
+      box-shadow: 0 4px 12px rgba(233,30,99,0.7);
+      z-index: 10;
+    }
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      z-index: 9999;
+    }
+    .modal.active {
+      display: flex;
+    }
+    .modal-content {
+      background: #fff;
+      border-radius: 12px;
+      max-width: 600px;
+      width: 100%;
+      padding: 20px;
+      position: relative;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #e91e63;
+      border: none;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .modal-content img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+    .modal-description {
+      font-size: 1em;
+      line-height: 1.4;
+      color: #333;
+    }
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 0.9em;
+      color: #777;
+    }
+    footer a {
+      color: #e91e63;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .profile-section {
+        flex-direction: column;
+        align-items: center;
+      }
+      .profile-text {
+        max-width: 100%;
+        text-align: center;
+        font-size: 1em;
+      }
+      .thumbnail {
+        width: 180px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Les vidéos de Roxane</h1>
+  </header>
+
+  <section class="profile-section">
+    <img src="https://i.imgur.com/1Q9Z1Zl.jpg" alt="Photo de profil Roxane" class="profile-pic" />
+    <p class="profile-text">
+      Au fil du temps, j’ai créé plein de petites vidéos uniques… Certaines dorment encore dans ma collection et n’attendent que vous pour revivre. Les voici, numérotées et décrites, pour que vous puissiez trouver vos préférées.
+    </p>
+  </section>
+
+  <section class="how-it-works" aria-label="Explication du fonctionnement">
+    <p>
+      <strong>COMMENT ÇA MARCHE ?</strong><br />
+      Choisissez la ou les vidéos qui vous plaisent, notez leur numéro, puis envoyez-le-moi en message privé sur Instagram. Nous conviendrons ensemble des détails.
+    </p>
+  </section>
+
+  <section class="slider-container" aria-label="Catalogue des vidéos">
+
+    <div class="category-buttons" role="group" aria-label="Filtres par catégorie">
+      <button class="active" data-category="all">Toutes</button>
+      <button data-category="domination">Domination</button>
+      <button data-category="mère-fille">Mère/Fille</button>
+      <button data-category="écrasement">Écrasement</button>
+      <button data-category="footjob">Footjob</button>
+      <button data-category="lèche-pieds">Lèche des pieds solo</button>
+      <button data-category="moi-solo">Moi solo</button>
+      <button data-category="chatouille">Chatouille</button>
+    </div>
+
+    <div class="slider slider-center" tabindex="0">
+      <!-- Exemple de miniature -->
+      <div class="thumbnail active" data-category="domination" tabindex="0" data-index="1" aria-label="Vidéo 1: Dominations roses">
+        <img src="https://i.imgur.com/QmPZHvl.jpg" alt="Vidéo 1 miniature" />
+        <div class="thumbnail-title">#1 Dominations roses</div>
+      </div>
+      <div class="thumbnail" data-category="mère-fille" tabindex="0" data-index="2" aria-label="Vidéo 2: Mère et fille complices">
+        <img src="https://i.imgur.com/8QaLcEj.jpg" alt="Vidéo 2 miniature" />
+        <div class="thumbnail-title">#2 Mère et fille complices</div>
+      </div>
+      <div class="thumbnail" data-category="footjob" tabindex="0" data-index="3" aria-label="Vidéo 3: Footjob délicat">
+        <img src="https://i.imgur.com/7NU9Z2q.jpg" alt="Vidéo 3 miniature" />
+        <div class="thumbnail-title">#3 Footjob délicat</div>
+      </div>
+      <!-- Ajoute d'autres miniatures ici -->
+    </div>
+
+  </section>
+
+  <!-- Modale description -->
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-desc">
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Fermer la description">&times;</button>
+      <img src="" alt="" id="modal-image" />
+      <div id="modal-desc" class="modal-description"></div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Suivez-moi sur <a href="https://instagram.com/roxane_frenchyfeet" target="_blank" rel="noopener noreferrer">Instagram</a></p>
+  </footer>
+
+  <script>
+    // Gestion du slider zoom central
+    const slider = document.querySelector('.slider');
+    const thumbnails = document.querySelectorAll('.thumbnail');
+
+    function updateActiveThumbnail(centerIndex) {
+      thumbnails.forEach((thumb, i) => {
+        thumb.classList.toggle('active', i === centerIndex);
+      });
+    }
+
+    // Détection du centre approximatif lors du scroll
+    slider.addEventListener('scroll', () => {
+      const sliderRect = slider.getBoundingClientRect();
+      let closestIndex = 0;
+      let closestDistance = Infinity;
+      thumbnails.forEach((thumb, i) => {
+        const thumbRect = thumb.getBoundingClientRect();
+        const thumbCenter = thumbRect.left + thumbRect.width / 2;
+        const sliderCenter = sliderRect.left + sliderRect.width / 2;
+        const distance = Math.abs(sliderCenter - thumbCenter);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = i;
+        }
+      });
+      updateActiveThumbnail(closestIndex);
+    });
+
+    // Gestion filtre catégories
+    const buttons = document.querySelectorAll('.category-buttons button');
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        buttons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        const category = button.getAttribute('data-category');
+
+        thumbnails.forEach(thumb => {
+          if (category === 'all' || thumb.getAttribute('data-category') === category) {
+            thumb.style.display = 'flex';
+          } else {
+            thumb.style.display = 'none';
+          }
+        });
+        // Reset active thumbnail to first visible
+        const visibleThumbs = Array.from(thumbnails).filter(t => t.style.display !== 'none');
+        if (visibleThumbs.length > 0) {
+          thumbnails.forEach(t => t.classList.remove('active'));
+          visibleThumbs[0].classList.add('active');
+          // Scroll slider to show first visible thumbnail
+          visibleThumbs[0].scrollIntoView({ behavior: 'smooth', inline: 'center' });
+        }
+      });
+    });
+
+    // Gestion ouverture modale
+    const modal = document.query
